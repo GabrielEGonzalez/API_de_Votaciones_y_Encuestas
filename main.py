@@ -1,7 +1,12 @@
-from fastapi import FastAPI , responses , Request
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
 
-app = FastAPI(title="api de encuesta y votaciones",version="0.0.1",routes=["/v1/votaciones","/v1/encuesta"],description="esta es una de votaciones y encuesta en vivo sera usada para majenar datos de los usuario y es una api restfull")
+app = FastAPI(
+    title="API de encuesta y votaciones",
+    version="0.0.1",
+    description="Esta es una API de votaciones y encuestas en vivo. Será usada para manejar datos de los usuarios y es una API RESTful."
+)
 
-@app.get("/root")
+@app.get("/root", response_class=HTMLResponse)
 async def root():
-    return responses.HTMLResponse('<p>API DE ENCUESTA Y VOTACIONES</p>')
+    return '<p>API DE ENCUESTA Y VOTACIONES</p>'
