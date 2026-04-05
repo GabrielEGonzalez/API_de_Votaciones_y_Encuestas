@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse
 
 app = FastAPI(
     title="API de encuesta y votaciones",
-    version="0.0.1",
+    version="1.0.0",
     description="Esta es una API de votaciones y encuestas en vivo. Será usada para manejar datos de los usuarios y es una API RESTful."
 )
 
