@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FastAPI HTML</title>
+</head>
+<body>
+    <h1>Hola, esto es HTML desde FastAPI</h1>
+    <p>ID: {{ id }}</p>
+    <p>Nombre: {{ name }}</p>
+</body>
+</html>
+
+<!-- 
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
+
+templates = Jinja2Templates(directory="templates")
+
+
+@app.get("/", response_class=HTMLResponse)
+async def read_item(request: Request):
+    # 'context' debe incluir 'request' obligatoriamente
+    return templates.TemplateResponse(
+        request=request, name="index.html", context={"id": 1, "name": "Ejemplo"}
+    ) 
+
+
+    -->
