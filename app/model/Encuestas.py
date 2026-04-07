@@ -11,4 +11,4 @@ class Encuestas(Base):
     creador_id = Column(Integer,ForeignKey("usuarios.id"))
     
     usuario = relationship("Usuarios",back_populates="encuestas")
-    voto = relationship("Votos",back_populates="encuesta")
+    opciones = relationship("Opciones",back_populates="encuesta")
