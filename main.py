@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
+from app.routers.Usuarios import userRouter
 
 app = FastAPI(
     title="API de encuesta y votaciones",
@@ -10,3 +11,5 @@ app = FastAPI(
 @app.get("/root", response_class=HTMLResponse)
 async def root():
     return '<p>API DE ENCUESTA Y VOTACIONES</p>'
+
+app.include_router(userRouter)
