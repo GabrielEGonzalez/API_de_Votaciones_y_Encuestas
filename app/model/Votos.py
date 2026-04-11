@@ -7,7 +7,7 @@ class Votos(Base):
     
     id = Column(Integer,autoincrement=True,primary_key=True)
     usuario_id = Column(Integer,ForeignKey("usuarios.id"))
-    opcion_id = Column(Integer,ForeignKey("encuestas.id"))
+    opcion_id = Column(Integer,ForeignKey("opciones.id"))
     
-    encuesta = relationship("Encuestas",back_populates="voto")
+    opcion = relationship("Opciones",back_populates="votos")
     usuario = relationship("Usuarios",back_populates="votos")
