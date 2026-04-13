@@ -9,7 +9,7 @@ app = FastAPI(
     description="Esta es una API de votaciones y encuestas en vivo. Será usada para manejar datos de los usuarios y es una API RESTful."
 )
 
-Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine) 
 
 @app.get("/root", response_class=HTMLResponse)
 async def root():
