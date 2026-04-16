@@ -1,7 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 from ..model.Usuario import Usuarios
-from passlib.hash import pbkdf2_sha256
 
 class userRepositorio():
     def __init__(self,db:Session):
