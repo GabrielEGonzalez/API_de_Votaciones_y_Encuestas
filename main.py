@@ -1,7 +1,8 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from app.routers.Usuarios import userRouter
 from configuracion_database import Base , engine
+from app.model import Usuario,Encuestas,Votos,Opciones
 
 app = FastAPI(
     title="API de encuesta y votaciones",
