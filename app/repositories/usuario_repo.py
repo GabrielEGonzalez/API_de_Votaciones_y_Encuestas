@@ -12,5 +12,11 @@ class userRepositorio():
         self.db.refresh(user)
         return user
     
-    def getUserByID(self,password:str,correo:str): #metodo no funcionando logica incloclusa
+    def getUserByEmail(self,correo:str): #metodo no funcionando logica incloclusa
         user_id = self.db.query(select(Usuarios).where(Usuarios.correo == correo))
+    
+    def getUserById(self,id:int):
+        pass
+    
+    def obtener_encuestas_por_usuario_id(self):
+        pass
