@@ -10,10 +10,11 @@ userRouter = APIRouter(prefix="/v1")
 @userRouter.post("/user")
 async def creater_user(user:CreaterUser,services_user:usuarioService =Depends(get_conexion)):
     """ crear un nuevo usuario """
-    services_user.create_user(user)
-    return user
+    token = services_user.create_user(user)
+    return token
 
 @userRouter.post("/login")
-async def login_user(user:CreaterUser, db:Session=Depends(get_bd)):
+async def login_user(user:CreaterUser, services_user: usuarioService=Depends(get_conexion)):
     """ login de usuario que se le devolvera un id o un token"""
-    return 
+    token = services_user.login_usuario(user)
+    return token 
