@@ -5,7 +5,7 @@ from app.model.Usuario import Usuarios
 from passlib.hash import pbkdf2_sha256
 from app.schemas.Usuarios import OutUser
 from jose import jwt
-from datetime import datetime, timedelta
+from datetime import  datetime, timedelta, timezone
 
 class usuarioService():
     def __init__(self,repo:userRepositorio):
@@ -24,10 +24,12 @@ class usuarioService():
         if not self.verify_password(user.password,usuario.password):
             raise HTTPException(status_code=401,detail="incorrect password")
         
+        expire = datetime.now(timezone.utc) + timedelta(minutes=30)
         data = {
-            'id':usuario.id,
-            'nombre':usuario.nombre,
-            'correo':usuario.correo
+            "id":usuario.id,
+            "nombre":usuario.nombre,
+            "correo":usuario.correo,
+            "exp": int(expire.timestamp())
         }
         token = jwt.encode(data,"secret",algorithm="HS256")
         return token
