@@ -1,3 +1,4 @@
+from typing import List
 from ..model.Encuestas import Encuestas
 from ..model.Opciones import Opciones
 from sqlalchemy.orm import Session
@@ -14,7 +15,7 @@ class Encuesta():
         self.db.refresh(encuesta)
         return encuesta
 
-    def crear_opciones(self):
+    def crear_opciones(self,opciones:List[Opciones])
         pass
 
     def get_all_encuesta(self):
