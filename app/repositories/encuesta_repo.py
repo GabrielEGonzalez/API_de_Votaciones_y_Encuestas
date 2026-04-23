@@ -2,7 +2,7 @@ from typing import List
 from ..model.Encuestas import Encuestas
 from ..model.Opciones import Opciones
 from sqlalchemy.orm import Session
-from sqlalchemy import select
+from sqlalchemy import delete, select, Update
 
 class Encuesta():
 
@@ -15,17 +15,31 @@ class Encuesta():
         self.db.refresh(encuesta)
         return encuesta
 
-    def crear_opciones(self,opciones:List[Opciones])
-        pass
+    def crear_opciones(self,opciones:List[Opciones]):
+        try:
+            for opcion in opciones:
+              self.db.add(opcion)
+              self.db.commit()
+              self.db.refresh(opcion)
+            return 1
+        except:
+            return 0
 
     def get_all_encuesta(self):
-        pass
+        lista_encuestas = self.db.execute(select(Encuestas)).scalars().first()
+        return lista_encuestas
 
-    def get_encuesta_id(self):
-        pass
+    def get_encuesta_id(self,encuesta_id: int):
+        encuesta = self.db.execute(select(Encuestas).where(Encuestas.id == encuesta_id)).scalars().first()
+        return encuesta
 
-    def eliminar_encuesta(self):
-        pass
+    def eliminar_encuesta(self,encuesta_id:int):
+        encuesta = self.db.execute(select(Encuestas).where(Encuestas.id == encuesta_id)).first()
+        self.db.delete(encuesta)
+        self.db.commit()
+        self.db.refresh(encuesta)
+
+        return encuesta
 
     def actualizar_estado(self):
         pass
