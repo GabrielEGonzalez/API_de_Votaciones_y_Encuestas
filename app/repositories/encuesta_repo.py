@@ -2,7 +2,7 @@ from typing import List
 from ..model.Encuestas import Encuestas
 from ..model.Opciones import Opciones
 from sqlalchemy.orm import Session
-from sqlalchemy import delete, select, Update
+from sqlalchemy import delete, select, update
 
 class Encuesta():
 
