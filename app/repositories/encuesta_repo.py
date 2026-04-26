@@ -3,6 +3,7 @@ from ..model.Encuestas import Encuestas
 from ..model.Opciones import Opciones
 from sqlalchemy.orm import Session
 from sqlalchemy import delete, select, update
+from sqlalchemy.exc import SQLAlchemyError
 
 class Encuesta():
 
@@ -15,19 +16,24 @@ class Encuesta():
         self.db.refresh(encuesta)
         return encuesta
 
-    def crear_opciones(self,opciones:List[Opciones]):
+    def crear_opciones(self,opciones:List[Opciones]) -> List[Opciones]:
         try:
+            lista_opciones = []
             for opcion in opciones:
               self.db.add(opcion)
               self.db.commit()
               self.db.refresh(opcion)
-            return 1
-        except:
-            return 0
+              lista_opciones.append(opciones)
+            return lista_opciones
+        except SQLAlchemyError as e:
+            raise e
 
     def get_all_encuesta(self):
-        lista_encuestas = self.db.execute(select(Encuestas)).scalars().first()
-        return lista_encuestas
+        try:
+            lista_encuestas = self.db.execute(select(Encuestas)).scalars().first()
+            return lista_encuestas
+        except Exception as e:
+            raise e
 
     def get_encuesta_id(self,encuesta_id: int):
         encuesta = self.db.execute(select(Encuestas).where(Encuestas.id == encuesta_id)).scalars().first()
@@ -41,7 +47,8 @@ class Encuesta():
 
         return encuesta
 
-    def actualizar_estado(self):
+    def actualizar_estado(self,encuesta_id:int):
+        encuesta_encontrada = self.db.execute(select(Encuestas).where(Encuestas.id == encuesta_id)).scalars().first()
         pass
 
     def obtener_encuestas_sin_votos(self):
