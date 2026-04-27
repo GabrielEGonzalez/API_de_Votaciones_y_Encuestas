@@ -2,7 +2,7 @@ from typing import List
 from ..model.Encuestas import Encuestas
 from ..model.Opciones import Opciones
 from sqlalchemy.orm import Session
-from sqlalchemy import delete, select, update
+from sqlalchemy import select, update
 from sqlalchemy.exc import SQLAlchemyError
 
 class Encuesta():
@@ -47,9 +47,13 @@ class Encuesta():
 
         return encuesta
 
-    def actualizar_estado(self,encuesta_id:int):
-        encuesta_encontrada = self.db.execute(select(Encuestas).where(Encuestas.id == encuesta_id)).scalars().first()
-        pass
+    def actualizar_estado(self,encuesta_id:int,estado:bool):
+        encuesta_encontrada = self.db.execute(update(Encuestas).where(Encuestas.id == encuesta_id).values(activo=estado)).scalars()
+        return encuesta_encontrada
+
+    def obtener_estado_encuesta(self,encuesta_id:int):
+        estado_encuesta = self.db.execute(select(Encuestas.activo).where(Encuestas.id == encuesta_id)).scalars().first()
+        return estado_encuesta
 
     def obtener_encuestas_sin_votos(self):
         pass
