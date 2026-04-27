@@ -1,8 +1,9 @@
 from typing import List
 from ..model.Encuestas import Encuestas
 from ..model.Opciones import Opciones
+from ..model.Votos import Votos
 from sqlalchemy.orm import Session
-from sqlalchemy import select, update
+from sqlalchemy import select, update , func
 from sqlalchemy.exc import SQLAlchemyError
 
 class Encuesta():
@@ -56,13 +57,44 @@ class Encuesta():
         return estado_encuesta
 
     def obtener_encuestas_sin_votos(self):
-        pass
+        stmt = (
+                select(Encuestas)
+                .outerjoin(Votos) # Esto hace el LEFT JOIN
+                .where(Votos.id.is_(None)) # Filtra: solo los que NO tienen relación en la tabla Voto
+                )
+
+        results = self.db.execute(stmt).scalars().all()
+        return results
 
     def obtener_opciones_por_encuesta(self):
-        pass
+        opciones = self.db.execute(select(Opciones).where(Opciones.encuesta_id == Encuestas.id)).scalars().all()
+
+        return opciones
+
 
     def contar_votos_por_opcion(self):
-        pass
+        result = self.db.execute(
+                select(Opciones.texto,func.count(Votos.id)
+                       .label("total_votos"))
+                .outerjoin(Votos,Opciones.id == Votos.opcion_id)
+                .group_by(Opciones.id)).all()
+        return result
 
-    def obtener_top_encuestas(self):
-        pass
+    def obtener_encuestas_top(self, limite=5):
+        sql = (
+        select(
+            Encuestas.titulo, 
+            func.count(Votos.id).label("total_votos")
+        )
+        # 1. Unimos las tablas (Encuesta -> Opciones -> Votos)
+        .join(Opciones, Encuestas.id == Opciones.encuesta_id)
+        .join(Votos, Opciones.id == Votos.opcion_id)
+        # 2. Agrupamos por la encuesta
+        .group_by(Encuestas.id)
+        # 3. Ordenamos de mayor a menor según el conteo
+        .order_by(func.count(Votos.id).desc())
+        # 4. Limitamos el resultado (el "Top X")
+        .limit(limite)
+        )
+    
+        return self.db.execute(sql).all()
