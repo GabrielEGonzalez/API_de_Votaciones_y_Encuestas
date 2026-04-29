@@ -18,17 +18,18 @@ manejar creación de opciones automáticamente
 """
 
 from ..repositories.encuesta_repo import EncuestaRepository
-from .app.schemas.Encuestas import createEncuesta , outEncuesta
+from ..schemas.Encuestas import createEncuesta, outEncuesta 
+
 class EncuestaService():
 
     def __init__(self,encuestaRepo:EncuestaRepository) -> None:
         self.encuesta_repo = encuestaRepo
 
-    def crear_encuesta_con_opciones(self):
+    def crear_encuesta_con_opciones(self,encuesta:createEncuesta,token:str):
         pass
 
     def listar_encuestas(self):
-        pass
+        return self.encuesta_repo.get_all_encuesta()
 
     def obtener_encuesta_por_id(self):
         pass
