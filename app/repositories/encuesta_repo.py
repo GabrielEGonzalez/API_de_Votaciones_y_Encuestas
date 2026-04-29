@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select, update , func
 from sqlalchemy.exc import SQLAlchemyError
 
-class Encuesta():
+class EncuestaRepository():
 
     def __init__(self,db:Session):
         self.db = db
