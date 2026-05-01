@@ -4,6 +4,9 @@ from configuracion_database import get_bd
 from app.schemas.Usuarios import CreaterUser
 from dependencies import get_conexion
 from app.services.usuario_service import usuarioService
+from fastapi.security import OAuth2PasswordBearer
+
+oauth_schema = OAuth2PasswordBearer(tokenUrl="login")
 
 userRouter = APIRouter(prefix="/v1")
 
