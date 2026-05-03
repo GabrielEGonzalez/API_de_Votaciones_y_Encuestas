@@ -17,15 +17,12 @@ class EncuestaRepository():
         self.db.refresh(encuesta)
         return encuesta
 
-    def crear_opciones(self,opciones:List[Opciones]) -> List[Opciones]:
+    def crear_opciones(self,opciones:Opciones) -> Opciones:
         try:
-            lista_opciones = []
-            for opcion in opciones:
-              self.db.add(opcion)
+              self.db.add(opciones)
               self.db.commit()
-              self.db.refresh(opcion)
-              lista_opciones.append(opciones)
-            return lista_opciones
+              self.db.refresh(opciones)
+              return opciones
         except SQLAlchemyError as e:
             raise e
 
