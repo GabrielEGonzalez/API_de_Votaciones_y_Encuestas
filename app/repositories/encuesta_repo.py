@@ -1,4 +1,3 @@
-from typing import List
 from ..model.Encuestas import Encuestas
 from ..model.Opciones import Opciones
 from ..model.Votos import Votos
