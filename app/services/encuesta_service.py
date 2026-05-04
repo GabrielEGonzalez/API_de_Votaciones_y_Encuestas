@@ -31,7 +31,7 @@ class EncuestaService():
     def crear_encuesta_con_opciones(self,encuesta:createEncuesta,token:str):
 
         if not encuesta:
-            raise(HTTPException(status_code=405))
+            raise(HTTPException(status_code=301))
 
         encuesta_db = Encuestas(titulo=encuesta.titulo,descripcion=encuesta.descripcion,creador_id=token)
         encuesta_res_db = self.encuesta_repo.crear_encuesta(encuesta_db)
