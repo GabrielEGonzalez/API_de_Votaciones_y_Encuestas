@@ -44,13 +44,33 @@ class EncuestaRepository():
 
         return encuesta
 
-    def actualizar_estado(self,encuesta_id:int,estado:bool):
-        encuesta_encontrada = self.db.execute(update(Encuestas).where(Encuestas.id == encuesta_id).values(activo=estado)).scalars()
-        return encuesta_encontrada
+    def actualizar_estado(self, encuesta_id: int):
+        estado_actual = self.obtener_estado_encuesta(encuesta_id)
 
-    def obtener_estado_encuesta(self,encuesta_id:int):
-        estado_encuesta = self.db.execute(select(Encuestas.activo).where(Encuestas.id == encuesta_id)).scalars().first()
-        return estado_encuesta
+        if estado_actual is None:
+            return None
+
+        nuevo_estado = 0 if estado_actual == 1 else 1
+
+        self.db.execute(
+            update(Encuestas)
+            .where(Encuestas.id == encuesta_id)
+            .values(activo=nuevo_estado)
+        )
+
+        self.db.commit()
+
+        return nuevo_estado
+
+
+    def obtener_estado_encuesta(self, encuesta_id: int):
+
+        estado_encuesta = self.db.execute(
+            select(Encuestas.activo)
+            .where(Encuestas.id == encuesta_id)
+        ).scalar()
+
+        return estado_encuesta 
 
     def obtener_encuestas_sin_votos(self):
         stmt = (
