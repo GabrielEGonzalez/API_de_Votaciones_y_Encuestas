@@ -56,7 +56,15 @@ class EncuestaService():
         return encuesta_encontrada
 
     def obtener_resultados(self):
-        pass
+        opciones = self.encuesta_repo.obtener_opciones_por_encuesta()
+        votos_opciones = self.encuesta_repo.contar_votos_por_opcion()
+
+        return {
+                "resultados":[
+                    {"opciones":opciones},
+                    {"votos_opciones":votos_opciones}
+                    ]
+                }
 
     def obtener_top_encuestas(self):
         top_encuesta = self.encuesta_repo.obtener_encuestas_top(10)
@@ -65,8 +73,8 @@ class EncuestaService():
     def obtener_encuestas_sin_votos(self):
         return self.encuesta_repo.obtener_encuestas_sin_votos()
 
-    def cambiar_estado_encuesta(self):
-        pass
+    def cambiar_estado_encuesta(self,id:int):
+        return self.encuesta_repo.actualizar_estado(id)
 
     def eliminar_encuesta(self,id_encuesta:int):
         encuesta_eliminada = self.encuesta_repo.eliminar_encuesta(id_encuesta)
