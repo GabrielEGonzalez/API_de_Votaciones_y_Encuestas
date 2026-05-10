@@ -12,6 +12,8 @@ obtener_encuesta_id_por_opcion
 
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
+
+from app.model.Encuestas import Encuestas
 from ..model.Votos import Votos
 from sqlalchemy.orm import Session
 from ..model.Opciones import Opciones
@@ -45,6 +47,15 @@ class VotoRepository():
         except SQLAlchemyError as e:
             raise(e)
 
-    def obtener_encuesta_id_por_opcion(self):
-        pass
+    def obtener_encuesta_id_por_opcion(self,opcion_id:int):
+        try:
+            encuesta = self.db.execute(
+                    select(Encuestas)
+                    .join(Opciones , Opciones.encuesta_id == Encuestas.id  )
+                    .where(Opciones.id == opcion_id)
+                    ).scalars().first()
+
+            return encuesta
+        except SQLAlchemyError as e:
+            raise(e)
 
