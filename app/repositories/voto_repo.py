@@ -10,7 +10,7 @@ verificar_opcion_existe
 obtener_encuesta_id_por_opcion
 """
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.model.Encuestas import Encuestas
@@ -36,8 +36,20 @@ class VotoRepository():
     def buscar_voto_por_usuario_y_encuesta(self):
         pass
 
-    def contar_votos_por_encuesta(self):
-        pass
+    def contar_votos_por_encuesta(self,id_encuesta:int):
+        try:
+
+            conteo = self.db.execute(
+                    select(Opciones.texto,func.count(Votos.opcion_id).label("total_votos"))
+                    .outerjoin(Votos,Opciones.id == Votos.opcion_id)
+                    .where(Opciones.encuesta_id == id_encuesta)
+                    .group_by(Opciones.id,Opciones.texto)
+                    ).all()
+
+            return conteo
+
+        except SQLAlchemyError as e:
+            raise(e)
 
     def verificar_opcion_existe(self,id:int):
 
