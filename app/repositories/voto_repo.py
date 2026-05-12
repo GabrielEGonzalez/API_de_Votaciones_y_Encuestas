@@ -10,6 +10,7 @@ verificar_opcion_existe
 obtener_encuesta_id_por_opcion
 """
 
+from operator import and_
 from sqlalchemy import func, select
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -33,8 +34,18 @@ class VotoRepository():
         except SQLAlchemyError as e:
             raise(e)
 
-    def buscar_voto_por_usuario_y_encuesta(self):
-        pass
+    def buscar_voto_por_usuario_y_encuesta(self,id_usuario:int,id_encuesta:int):
+
+        try:
+            verificacion_usuario_encuesta = self.db.execute(
+                    select(Votos)
+                    .outerjoin(Opciones, Opciones.id == Votos.opcion_id)
+                    .where(and_(Votos.id_usuario == id_usuario ,Opciones.id_encuesta == id_encuesta))
+                    ).scalars().first()
+            return verificacion_usuario_encuesta
+        except SQLAlchemyError as e:
+            raise(e)
+
 
     def contar_votos_por_encuesta(self,id_encuesta:int):
         try:
