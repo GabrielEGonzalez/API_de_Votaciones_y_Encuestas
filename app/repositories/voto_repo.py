@@ -24,8 +24,9 @@ class VotoRepository():
     def __init__(self,db:Session):
         self.db = db
 
-    def crear_voto(self,votos:Votos):
+    def crear_voto(self,id_usuario:int,opcion_id:int):
         try:
+            votos = Votos(usuario_id=id_usuario,opcion_id=opcion_id)
             self.db.add(votos)
             self.db.commit()
             self.db.refresh(votos)
