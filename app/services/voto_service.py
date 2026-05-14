@@ -13,8 +13,10 @@ evitar votos duplicados
 validar integridad
 """
 
+from ..repositories.voto_repo import VotoRepository
+
 class VotoService:
-    def __init__(self, voto_repository, encuesta_repository, usuario_repository):
+    def __init__(self, voto_repository:VotoRepository, encuesta_repository, usuario_repository):
         self.voto_repo = voto_repository
         self.encuesta_repo = encuesta_repository
         self.usuario_repo = usuario_repository
@@ -24,7 +26,8 @@ class VotoService:
         Orquestador principal que coordina las validaciones 
         y la creación final del voto.
         """
-        pass
+
+        return self.voto_repo.crear_voto(usuario_id,opcion_id)
 
     def validar_usuario_existe(self, usuario_id: int):
         """
@@ -36,7 +39,8 @@ class VotoService:
         """
         Verifica en el repositorio de encuestas si la opción existe.
         """
-        pass
+        opcion_existe = self.voto_repo.verificar_opcion_existe(opcion_id)
+        return opcion_existe
 
     def verificar_usuario_ya_voto(self, usuario_id: int, encuesta_id: int):
         """
@@ -48,4 +52,5 @@ class VotoService:
         """
         Recupera la entidad Encuesta vinculada a la opción seleccionada.
         """
-        pass
+        encuesta = self.voto_repo.obtener_encuesta_id_por_opcion(opcion_id)
+        return encuesta
