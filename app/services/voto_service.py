@@ -7,7 +7,7 @@ validar_opcion_existe
 verificar_usuario_ya_voto
 obtener_encuesta_por_opcion
 
-👉 ⚠️ Esta parte es CLAVE:
+Esta parte es CLAVE:
 
 evitar votos duplicados
 validar integridad
@@ -26,6 +26,12 @@ class VotoService:
         Orquestador principal que coordina las validaciones 
         y la creación final del voto.
         """
+
+        if not usuario_id:
+            pass
+
+        if not opcion_id:
+            pass
 
         return self.voto_repo.crear_voto(usuario_id,opcion_id)
 
