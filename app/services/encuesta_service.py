@@ -1,22 +1,3 @@
-"""
-Lógica fuerte aquí:
-
-crear_encuesta_con_opciones
-listar_encuestas
-obtener_encuesta_por_id
-obtener_resultados
-obtener_top_encuestas
-obtener_encuestas_sin_votos
-cambiar_estado_encuesta
-eliminar_encuesta
-
-👉 Validaciones:
-
-usuario creador existe
-encuesta activa/inactiva
-manejar creación de opciones automáticamente
-"""
-
 from ..repositories.encuesta_repo import EncuestaRepository
 from ..schemas.Encuestas import createEncuesta
 from ..model.Opciones import Opciones
