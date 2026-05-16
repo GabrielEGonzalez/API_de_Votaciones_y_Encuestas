@@ -14,24 +14,29 @@ validar integridad
 """
 
 from ..repositories.voto_repo import VotoRepository
+from fastapi.exceptions import HTTPException
 
 class VotoService:
-    def __init__(self, voto_repository:VotoRepository, encuesta_repository, usuario_repository):
+    def __init__(self, voto_repository:VotoRepository, usuario_repository):
         self.voto_repo = voto_repository
-        self.encuesta_repo = encuesta_repository
         self.usuario_repo = usuario_repository
 
-    def registrar_voto(self, usuario_id: int, opcion_id: int):
+    def registrar_voto(self, usuario_id: int, opcion_id: int,id_encuesta:int):
         """
         Orquestador principal que coordina las validaciones 
         y la creación final del voto.
         """
+        usuario_voto = self.voto_repo.buscar_voto_por_usuario_y_encuesta(usuario_id,id_encuesta)
+
+        if usuario_voto:
+            raise(HTTPException(status_code=301,detail="el usuario ha votado en la encuesta"))
 
         if not usuario_id:
-            pass
+            raise(HTTPException(status_code=400,detail="envio de datos faltantes campos obligatorios"))
 
         if not opcion_id:
-            pass
+             raise(HTTPException(status_code=400,detail="envio de datos faltantes campos obligatorios"))
+
 
         return self.voto_repo.crear_voto(usuario_id,opcion_id)
 
@@ -47,12 +52,6 @@ class VotoService:
         """
         opcion_existe = self.voto_repo.verificar_opcion_existe(opcion_id)
         return opcion_existe
-
-    def verificar_usuario_ya_voto(self, usuario_id: int, encuesta_id: int):
-        """
-        Consulta si existe un registro previo para evitar duplicidad.
-        """
-        pass
 
     def obtener_encuesta_por_opcion(self, opcion_id: int):
         """
