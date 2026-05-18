@@ -15,15 +15,7 @@ class usuarioService():
         passhash = pbkdf2_sha256.hash(user.password)
         modelo_user = Usuarios(nombre=user.nombre,correo=user.correo,password=passhash)
         bd_user = self.repo.createUser(modelo_user)
-        expire = datetime.now(timezone.utc) + timedelta(minutes=30)
-        data = {
-            "id":bd_user.id,
-            "nombre":bd_user.nombre,
-            "correo":bd_user.correo,
-            "exp": int(expire.timestamp())
-        }
-        token = jwt.encode(data,"secret",algorithm="HS256")
-        return token
+        return bd_user
     
     def login_usuario(self,user:CreaterUser)-> str:
         usuario = self.repo.getUserByEmail(user.correo)
