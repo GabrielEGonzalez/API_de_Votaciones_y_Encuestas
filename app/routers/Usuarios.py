@@ -1,12 +1,8 @@
 from fastapi import APIRouter , Depends
-from sqlalchemy.orm import Session
-from configuracion_database import get_bd
 from app.schemas.Usuarios import CreaterUser
 from dependencies import get_conexion
 from app.services.usuario_service import usuarioService
-from fastapi.security import OAuth2PasswordBearer
-
-oauth_schema = OAuth2PasswordBearer(tokenUrl="login")
+from dependencies import oauth2_scheme, get_current_user
 
 userRouter = APIRouter(prefix="/v1")
 
@@ -20,4 +16,8 @@ async def creater_user(user:CreaterUser,services_user:usuarioService =Depends(ge
 async def login_user(user:CreaterUser, services_user: usuarioService=Depends(get_conexion)):
     """ login de usuario que se le devolvera un id o un token"""
     token = services_user.login_usuario(user)
-    return token 
+    return token
+
+@userRouter.get("/user")
+async def obtener_saludo(usuario:oauth2_scheme=Depends(get_current_user)):
+    return {"massege":f"hol, bienvenido {usuario}"}
